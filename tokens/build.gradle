@@ -4,6 +4,7 @@ plugins {
     id 'signing'
 }
 
+
 java {
     sourceCompatibility = JavaVersion.VERSION_11
     targetCompatibility = JavaVersion.VERSION_11
@@ -27,78 +28,69 @@ test {
     useJUnitPlatform()
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
+task javadocJar(type: Jar) {
+    classifier 'javadoc'
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
     classifier 'sources'
     from sourceSets.main.allSource
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier 'javadoc'
-    from javadoc.destinationDir
+artifacts {
+    archives javadocJar, sourcesJar
 }
 
-def projectName = 'javaee-tokens'
-def repoUrl = 'https://github.com/sink772/javaee-tokens'
+def projectName = 'havah-tokens'
+def repoUrl = 'https://github.com/havah-project/sclib-token'
 def snapshotSuffix = rootProject.hasProperty('release') ? '' : '-SNAPSHOT'
 version = VERSION + snapshotSuffix
 
-def pomConfig = {
-    licenses {
-        license {
-            name "The Apache Software License, Version 2.0"
-            url "http://www.apache.org/licenses/LICENSE-2.0.txt"
-            distribution "repo"
-        }
-    }
-    developers {
-        developer {
-            id "sink772"
-            name "Jaechang Namgoong"
-            email "sink772@gmail.com"
-        }
-    }
-    scm {
-        url repoUrl
-    }
-}
-
 publishing {
-    repositories {
-        maven {
-            name = 'mavenCentral'
-            def releasesUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2"
-            def snapshotsUrl = "https://oss.sonatype.org/content/repositories/snapshots"
-            url = version.endsWith('SNAPSHOT') ? snapshotsUrl : releasesUrl
-            credentials {
-                username = rootProject.hasProperty('ossrhUsername') ? "$ossrhUsername" : ''
-                password = rootProject.hasProperty('ossrhPassword') ? "$ossrhPassword" : ''
-            }
-        }
-    }
     publications {
         mavenJava(MavenPublication) {
             groupId = GROUP
             artifactId = projectName
+            version = VERSION
             from components.java
-            artifact sourcesJar
-            artifact javadocJar
-            pom.withXml {
-                def root = asNode()
-                root.appendNode('name', projectName)
-                root.appendNode('description', 'A Java SCORE Library for ICON Standard Tokens')
-                root.appendNode('url', repoUrl)
-                root.children().last() + pomConfig
+            pom {
+                name = projectName
+                description = 'A Java Smart Contract Library for HAVAH Standard Tokens'
+                url = 'https://www.havah.io'
+                licenses {
+                    license {
+                        name = 'The Apache Software License, Version 2.0'
+                        url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'HAVAH'
+                        name = 'HAVAH Team'
+                        email = 'kn.kim@iconloop.com'
+                    }
+                }
+                scm {
+                    url = repoUrl
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            name = 'mavenCentral'
+            def releasesUrl = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotsUrl = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            url = version.endsWith('SNAPSHOT') ? snapshotsUrl : releasesUrl
+            credentials {
+                username = ossrhUsername
+                password = ossrhPassword
             }
         }
     }
 }
 
 signing {
-    required rootProject.hasProperty('release')
-    if (rootProject.hasProperty('signingKey')) {
-        def signingKey = rootProject.findProperty("signingKey")
-        def signingPassword = rootProject.findProperty("signingPassword")
-        useInMemoryPgpKeys(signingKey, signingPassword)
-    }
     sign publishing.publications.mavenJava
 }

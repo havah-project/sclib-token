@@ -7,14 +7,3 @@ subprojects {
         mavenCentral()
     }
 }
-
-nexusPublishing {
-    packageGroup = GROUP
-    repositories {
-        sonatype {
-            stagingProfileId = findProperty('ossrhProfileId') ?: System.getenv("STAGING_PROFILE_ID")
-            username = findProperty('ossrhUsername') ?: System.getenv("OSSRH_USERNAME")
-            password = findProperty('ossrhPassword') ?: System.getenv("OSSRH_PASSWORD")
-        }
-    }
-}
