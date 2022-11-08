@@ -17,6 +17,7 @@
 package io.havah.score.token.hsp721;
 
 import score.Address;
+import score.annotation.Optional;
 
 import java.math.BigInteger;
 
@@ -67,23 +68,7 @@ public interface HSP721 {
      * `onHSP721Received` on `_to` and throws if the return value is not
      * `bytes4(keccak256("onHSP721Received(address,address,uint256,bytes)"))`.
      */
-    void safeTransferFrom(Address _from, Address _to, BigInteger _tokenId, byte[] data);
-
-    /**
-     * Safely transfers `tokenId` token from `from` to `to`, checking first that contract recipients
-     * are aware of the HSP721 protocol to prevent tokens from being forever locked.
-     *
-     * Requirements:
-     *
-     * - `from` cannot be the zero address.
-     * - `to` cannot be the zero address.
-     * - `tokenId` token must exist and be owned by `from`.
-     * - If the caller is not `from`, it must have been allowed to move this token by either {approve} or {setApprovalForAll}.
-     * - If `to` refers to a smart contract, it must implement {HSP721Receiver-onHSP721Received}, which is called upon a safe transfer.
-     *
-     * Emits a {Transfer} event.
-     */
-    void safeTransferFrom(Address _from, Address _to, BigInteger _tokenId);
+    void safeTransferFrom(Address _from, Address _to, BigInteger _tokenId, @Optional byte[] data);
 
     /**
      * Transfers the ownership of an NFT from one address to another address, and MUST fire the {@code Transfer} event.

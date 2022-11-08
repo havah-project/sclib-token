@@ -17,6 +17,7 @@
 package io.havah.score.token.hsp1155;
 
 import score.Address;
+import score.annotation.Optional;
 
 import java.math.BigInteger;
 
@@ -126,7 +127,7 @@ public interface HSP1155 {
      * - If `to` refers to a smart contract, it must implement {HSP1155Receiver-onHSP1155Received} and return the
      * acceptance magic value.
      */
-    void safeTransferFrom(Address _from, Address _to, BigInteger _id, BigInteger _amount, byte[] _data);
+    void safeTransferFrom(Address _from, Address _to, BigInteger _id, BigInteger _amount, @Optional byte[] _data);
 
     /**
      * xref:ROOT:hsp1155.adoc#batch-operations[Batched] version of {safeTransferFrom}.
@@ -139,5 +140,5 @@ public interface HSP1155 {
      * - If `to` refers to a smart contract, it must implement {HSP1155Receiver-onHSP1155BatchReceived} and return the
      * acceptance magic value.
      */
-    void safeBatchTransferFrom(Address _from, Address _to, BigInteger[] _ids, BigInteger[] _amounts, byte[] _data);
+    void safeBatchTransferFrom(Address _from, Address _to, BigInteger[] _ids, BigInteger[] _amounts, @Optional byte[] _data);
 }

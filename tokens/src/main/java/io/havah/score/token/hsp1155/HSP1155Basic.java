@@ -20,6 +20,7 @@ import io.havah.score.token.hsp1155.extensions.HSP1155MetadataURI;
 import score.*;
 import score.annotation.EventLog;
 import score.annotation.External;
+import score.annotation.Optional;
 
 import java.math.BigInteger;
 
@@ -75,7 +76,7 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
     }
 
     @External
-    public void safeTransferFrom(Address _from, Address _to, BigInteger _id, BigInteger _amount, byte[] _data) {
+    public void safeTransferFrom(Address _from, Address _to, BigInteger _id, BigInteger _amount, @Optional byte[] _data) {
         final Address caller = Context.getCaller();
 
         Context.require(!_to.equals(ZERO_ADDRESS),
@@ -100,7 +101,7 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
     }
 
     @External
-    public void safeBatchTransferFrom(Address _from, Address _to, BigInteger[] _ids, BigInteger[] _amounts, byte[] _data) {
+    public void safeBatchTransferFrom(Address _from, Address _to, BigInteger[] _ids, BigInteger[] _amounts, @Optional byte[] _data) {
         final Address caller = Context.getCaller();
 
         Context.require(!_to.equals(ZERO_ADDRESS),

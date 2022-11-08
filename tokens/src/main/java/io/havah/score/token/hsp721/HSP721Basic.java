@@ -23,6 +23,7 @@
  import score.*;
  import score.annotation.EventLog;
  import score.annotation.External;
+ import score.annotation.Optional;
 
  import java.math.BigInteger;
 
@@ -97,14 +98,9 @@
      }
 
      @External
-     public void safeTransferFrom(Address _from, Address _to, BigInteger _tokenId, byte[] _data) {
+     public void safeTransferFrom(Address _from, Address _to, BigInteger _tokenId, @Optional byte[] _data) {
          Context.require(isApprovedOrOwner(Context.getCaller(), _tokenId), "caller is not token owner or approved");
          safeTransfer(_from, _to, _tokenId, _data);
-     }
-
-     @External
-     public void safeTransferFrom(Address _from, Address _to, BigInteger _tokenId) {
-         safeTransferFrom(_from, _to, _tokenId, null);
      }
 
      @External(readonly = true)

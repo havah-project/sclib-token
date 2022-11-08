@@ -157,14 +157,14 @@ public class HSP721BasicTest extends TestBase {
         var alice = sm.createAccount();
         var bob = sm.createAccount();
         assertThrows(AssertionError.class, () ->
-                tokenScore.invoke(alice, "safeTransferFrom", owner.getAddress(), bob.getAddress(), tokenId));
+                tokenScore.invoke(alice, "safeTransferFrom", owner.getAddress(), bob.getAddress(), tokenId, "safeTransferFrom".getBytes()));
         approveToken(owner, alice.getAddress(), tokenId);
         assertDoesNotThrow(() ->
-                tokenScore.invoke(alice, "safeTransferFrom", owner.getAddress(), bob.getAddress(), tokenId));
+                tokenScore.invoke(alice, "safeTransferFrom", owner.getAddress(), bob.getAddress(), tokenId, "safeTransferFrom".getBytes()));
         assertEquals(bob.getAddress(), tokenScore.call("ownerOf", tokenId));
         assertEquals(ZERO_ADDRESS, tokenScore.call("getApproved", tokenId));
         assertDoesNotThrow(() ->
-                tokenScore.invoke(bob, "safeTransferFrom", bob.getAddress(), alice.getAddress(), tokenId));
+                tokenScore.invoke(bob, "safeTransferFrom", bob.getAddress(), alice.getAddress(), tokenId, "safeTransferFrom".getBytes()));
         assertEquals(alice.getAddress(), tokenScore.call("ownerOf", tokenId));
     }
 
@@ -180,14 +180,14 @@ public class HSP721BasicTest extends TestBase {
         var alice = sm.createAccount();
         var bob = sm.createAccount();
         assertThrows(AssertionError.class, () ->
-                tokenScore.invoke(alice, "safeTransferFrom", owner.getAddress(), bob.getAddress(), tokenId));
+                tokenScore.invoke(alice, "safeTransferFrom", owner.getAddress(), bob.getAddress(), tokenId, "safeTransferFrom".getBytes()));
         setApprovalForAll(owner, alice.getAddress(), true);
         assertDoesNotThrow(() ->
-                tokenScore.invoke(alice, "safeTransferFrom", owner.getAddress(), bob.getAddress(), tokenId));
+                tokenScore.invoke(alice, "safeTransferFrom", owner.getAddress(), bob.getAddress(), tokenId, "safeTransferFrom".getBytes()));
         assertEquals(bob.getAddress(), tokenScore.call("ownerOf", tokenId));
         assertEquals(ZERO_ADDRESS, tokenScore.call("getApproved", tokenId));
         assertDoesNotThrow(() ->
-                tokenScore.invoke(bob, "safeTransferFrom", bob.getAddress(), alice.getAddress(), tokenId));
+                tokenScore.invoke(bob, "safeTransferFrom", bob.getAddress(), alice.getAddress(), tokenId, "safeTransferFrom".getBytes()));
         assertEquals(alice.getAddress(), tokenScore.call("ownerOf", tokenId));
         setApprovalForAll(owner, alice.getAddress(), false);
     }
