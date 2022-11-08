@@ -140,7 +140,7 @@ public class HSP721BasicTest extends TestBase {
         var tokenId = mintToken();
         var tokenId2 = mintToken();
         var alice = sm.createAccount();
-        tokenScore.invoke(owner, "transfer", alice.getAddress(), tokenId);
+        tokenScore.invoke(owner, "transferFrom", owner.getAddress(), alice.getAddress(), tokenId);
         assertThrows(AssertionError.class, () ->
                 tokenScore.invoke(owner, "burn", tokenId));
         assertDoesNotThrow(() ->

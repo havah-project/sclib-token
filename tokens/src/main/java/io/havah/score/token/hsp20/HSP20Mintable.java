@@ -36,25 +36,25 @@ public abstract class HSP20Mintable extends HSP20Basic {
     }
 
     /**
-     * Creates _amount number of tokens, and assigns to caller.
+     * Creates _value number of tokens, and assigns to caller.
      * Increases the balance of that account and the total supply.
      */
     @External
-    public void mint(BigInteger _amount) {
+    public void mint(BigInteger _value) {
         // simple access control - only the minter can mint new token
         Context.require(Context.getCaller().equals(minter.get()));
-        _mint(Context.getCaller(), _amount);
+        _mint(Context.getCaller(), _value);
     }
 
     /**
-     * Creates _amount number of tokens, and assigns to _account.
+     * Creates _value number of tokens, and assigns to _to.
      * Increases the balance of that account and the total supply.
      */
     @External
-    public void mintTo(Address _account, BigInteger _amount) {
+    public void mintTo(Address _to, BigInteger _value) {
         // simple access control - only the minter can mint new token
         Context.require(Context.getCaller().equals(minter.get()));
-        _mint(_account, _amount);
+        _mint(_to, _value);
     }
 
     @External

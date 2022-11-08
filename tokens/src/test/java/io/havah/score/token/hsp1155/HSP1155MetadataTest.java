@@ -98,7 +98,7 @@ public class HSP1155MetadataTest extends MultiTokenTest {
         */
         ArgumentCaptor<BigInteger> id = ArgumentCaptor.forClass(BigInteger.class);
         ArgumentCaptor<String> value = ArgumentCaptor.forClass(String.class);
-        verify(spy).URI(value.capture(), id.capture());
+        verify(spy).URI(id.capture(), value.capture());
 
         assertEquals(id.getValue(), newId);
         assertEquals(value.getValue(), newURI);

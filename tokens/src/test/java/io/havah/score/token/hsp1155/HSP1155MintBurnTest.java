@@ -68,8 +68,8 @@ public class HSP1155MintBurnTest extends MultiTokenTest {
         BigInteger newId = mintToken(supply);
 
         // burn with creator
-        BigInteger burn_amount = BigInteger.ONE;
-        score.invoke(owner, "burn", newId, burn_amount);
+        BigInteger burn_value = BigInteger.ONE;
+        score.invoke(owner, "burn", newId, burn_value);
     }
 
     @Test
@@ -86,9 +86,9 @@ public class HSP1155MintBurnTest extends MultiTokenTest {
         BigInteger newId = mintToken(supply);
 
         // burn with creator
-        BigInteger burn_amount = supply.add(BigInteger.ONE);
+        BigInteger burn_value = supply.add(BigInteger.ONE);
         assertThrows(AssertionError.class, () ->
-                score.invoke(owner, "burn", newId, burn_amount));
+                score.invoke(owner, "burn", newId, burn_value));
     }
 
     @Test
@@ -97,9 +97,9 @@ public class HSP1155MintBurnTest extends MultiTokenTest {
         BigInteger newId = mintToken(supply);
 
         // burn with eve
-        BigInteger burn_amount = BigInteger.ONE;
+        BigInteger burn_value = BigInteger.ONE;
         assertThrows(AssertionError.class, () ->
-                score.invoke(eve, "burn", newId, burn_amount));
+                score.invoke(eve, "burn", newId, burn_value));
     }
 
     @Test
@@ -119,9 +119,9 @@ public class HSP1155MintBurnTest extends MultiTokenTest {
         checkBalance(alice, newId, supply);
 
         // burn with new owner
-        BigInteger burn_amount = BigInteger.ONE;
-        score.invoke(alice, "burn", newId, burn_amount);
-        checkBalance(alice, newId, supply.subtract(burn_amount));
+        BigInteger burn_value = BigInteger.ONE;
+        score.invoke(alice, "burn", newId, burn_value);
+        checkBalance(alice, newId, supply.subtract(burn_value));
         checkBalance(owner, newId, BigInteger.ZERO);
     }
 }

@@ -72,57 +72,57 @@ public abstract class HSP20Basic implements HSP20, HSP20Metadata {
     }
 
     @External(readonly=true)
-    public BigInteger balanceOf(Address _account) {
-        return balances.getOrDefault(_account, BigInteger.ZERO);
+    public BigInteger balanceOf(Address _owner) {
+        return balances.getOrDefault(_owner, BigInteger.ZERO);
     }
 
-    private void safeSetBalance(Address owner, BigInteger amount) {
-        balances.set(owner, amount);
+    private void safeSetBalance(Address owner, BigInteger value) {
+        balances.set(owner, value);
     }
 
-    private void transfer(Address from, Address to, BigInteger amount) {
+    private void transfer(Address from, Address to, BigInteger value) {
         // check some basic requirements
-        Context.require(amount.compareTo(BigInteger.ZERO) >= 0, "_value needs to be positive");
-        Context.require(balanceOf(from).compareTo(amount) >= 0, "Insufficient balance");
+        Context.require(value.compareTo(BigInteger.ZERO) >= 0, "_value needs to be positive");
+        Context.require(balanceOf(from).compareTo(value) >= 0, "Insufficient balance");
 
         // adjust the balances
-        safeSetBalance(from, balanceOf(from).subtract(amount));
-        safeSetBalance(to, balanceOf(to).add(amount));
+        safeSetBalance(from, balanceOf(from).subtract(value));
+        safeSetBalance(to, balanceOf(to).add(value));
 
         // emit Transfer event first
-        Transfer(from, to, amount);
+        Transfer(from, to, value);
     }
 
     @External
-    public boolean transfer(Address _to, BigInteger _amount) {
+    public boolean transfer(Address _to, BigInteger _value) {
         Address _from = Context.getCaller();
-        transfer(_from, _to, _amount);
+        transfer(_from, _to, _value);
         return true;
     }
 
     /**
-     * Creates `amount` tokens and assigns them to `owner`, increasing the total supply.
+     * Creates `value` tokens and assigns them to `owner`, increasing the total supply.
      */
-    protected void _mint(Address owner, BigInteger amount) {
+    protected void _mint(Address owner, BigInteger value) {
         Context.require(!ZERO_ADDRESS.equals(owner), "Owner address cannot be zero address");
-        Context.require(amount.compareTo(BigInteger.ZERO) >= 0, "amount needs to be positive");
+        Context.require(value.compareTo(BigInteger.ZERO) >= 0, "value needs to be positive");
 
-        totalSupply.set(totalSupply().add(amount));
-        safeSetBalance(owner, balanceOf(owner).add(amount));
-        Transfer(ZERO_ADDRESS, owner, amount);
+        totalSupply.set(totalSupply().add(value));
+        safeSetBalance(owner, balanceOf(owner).add(value));
+        Transfer(ZERO_ADDRESS, owner, value);
     }
 
     /**
-     * Destroys `amount` tokens from `owner`, reducing the total supply.
+     * Destroys `value` tokens from `owner`, reducing the total supply.
      */
-    protected void _burn(Address owner, BigInteger amount) {
+    protected void _burn(Address owner, BigInteger value) {
         Context.require(!ZERO_ADDRESS.equals(owner), "Owner address cannot be zero address");
-        Context.require(amount.compareTo(BigInteger.ZERO) >= 0, "amount needs to be positive");
-        Context.require(balanceOf(owner).compareTo(amount) >= 0, "Insufficient balance");
+        Context.require(value.compareTo(BigInteger.ZERO) >= 0, "value needs to be positive");
+        Context.require(balanceOf(owner).compareTo(value) >= 0, "Insufficient balance");
 
-        safeSetBalance(owner, balanceOf(owner).subtract(amount));
-        totalSupply.set(totalSupply().subtract(amount));
-        Transfer(owner, ZERO_ADDRESS, amount);
+        safeSetBalance(owner, balanceOf(owner).subtract(value));
+        totalSupply.set(totalSupply().subtract(value));
+        Transfer(owner, ZERO_ADDRESS, value);
     }
 
     private void _approve(Address owner, Address spender, BigInteger value) {
@@ -134,9 +134,9 @@ public abstract class HSP20Basic implements HSP20, HSP20Metadata {
     }
 
     @External(readonly = true)
-    public boolean approve(Address _spender, BigInteger _amount) {
+    public boolean approve(Address _spender, BigInteger _value) {
         Address owner = Context.getCaller();
-        _approve(owner, _spender, _amount);
+        _approve(owner, _spender, _value);
         return true;
     }
 
@@ -145,18 +145,18 @@ public abstract class HSP20Basic implements HSP20, HSP20Metadata {
         return allowances.at(_owner).getOrDefault(_spender, BigInteger.ZERO);
     }
 
-    void _spendAllowance(Address owner, Address spender, BigInteger amount) {
+    void _spendAllowance(Address owner, Address spender, BigInteger value) {
         BigInteger currentAllowance = allowance(owner, spender);
-        BigInteger reminder = currentAllowance.subtract(amount);
+        BigInteger reminder = currentAllowance.subtract(value);
         Context.require(reminder.signum() >= 0, "insufficient allowance");
         _approve(owner, spender,  reminder);
     }
 
     @External
-    public boolean transferFrom(Address _from, Address _to, BigInteger _amount) {
+    public boolean transferFrom(Address _from, Address _to, BigInteger _value) {
         Address spender = Context.getCaller();
-        _spendAllowance(_from, spender, _amount);
-        transfer(_from, _to, _amount);
+        _spendAllowance(_from, spender, _value);
+        transfer(_from, _to, _value);
         return true;
     }
 

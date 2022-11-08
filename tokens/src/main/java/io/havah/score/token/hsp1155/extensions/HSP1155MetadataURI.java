@@ -18,5 +18,13 @@ package io.havah.score.token.hsp1155.extensions;
 import java.math.BigInteger;
 
 public interface HSP1155MetadataURI {
-    String uri(BigInteger id);
+    /**
+     *
+     * This implementation returns the same URI for *all* token types. It relies
+     * on the token type ID substitution mechanism
+     *
+     * Clients calling this function must replace the `\{_id\}` substring with the
+     * actual token type ID.
+     */
+    String uri(BigInteger _id);
 }

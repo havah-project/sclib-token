@@ -60,15 +60,15 @@ public abstract class HSP1155MintBurn extends HSP1155Basic {
      * Destroys tokens for a given amount
      *
      * @param _id     ID of the token
-     * @param _amount The amount of tokens to burn
+     * @param _value The amount of tokens to burn
      */
     @External
-    public void burn(BigInteger _id, BigInteger _amount) {
+    public void burn(BigInteger _id, BigInteger _value) {
         Context.require(creators.get(_id) != null, "Invalid token id");
-        Context.require(_amount.compareTo(BigInteger.ZERO) > 0, "Amount should be positive");
+        Context.require(_value.compareTo(BigInteger.ZERO) > 0, "Amount should be positive");
 
         // burn tokens
-        super._burn(Context.getCaller(), _id, _amount);
+        super._burn(Context.getCaller(), _id, _value);
     }
 
     /**

@@ -46,8 +46,8 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
     // ================================================
 
     @External(readonly = true)
-    public BigInteger balanceOf(Address _account, BigInteger _id) {
-        return balances.at(_id).getOrDefault(_account, BigInteger.ZERO);
+    public BigInteger balanceOf(Address _owner, BigInteger _id) {
+        return balances.at(_id).getOrDefault(_owner, BigInteger.ZERO);
     }
 
     @External(readonly = true)
@@ -71,49 +71,49 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
     }
 
     @External(readonly = true)
-    public boolean isApprovedForAll(Address _account, Address _operator) {
-        return operatorApproval.at(_account).getOrDefault(_operator, false);
+    public boolean isApprovedForAll(Address _owner, Address _operator) {
+        return operatorApproval.at(_owner).getOrDefault(_operator, false);
     }
 
     @External
-    public void safeTransferFrom(Address _from, Address _to, BigInteger _id, BigInteger _amount, @Optional byte[] _data) {
+    public void safeTransferFrom(Address _from, Address _to, BigInteger _id, BigInteger _value, @Optional byte[] _data) {
         final Address caller = Context.getCaller();
 
         Context.require(!_to.equals(ZERO_ADDRESS),
                 "_to must be non-zero");
         Context.require(_from.equals(caller) || this.isApprovedForAll(_from, caller),
                 "Need operator approval for 3rd party transfers");
-        Context.require(BigInteger.ZERO.compareTo(_amount) <= 0 && _amount.compareTo(balanceOf(_from, _id)) <= 0,
+        Context.require(BigInteger.ZERO.compareTo(_value) <= 0 && _value.compareTo(balanceOf(_from, _id)) <= 0,
                 "Insufficient funds");
 
         // Transfer funds
         DictDB<Address, BigInteger> balance = balances.at(_id);
-        balance.set(_from, balanceOf(_from, _id).subtract(_amount));
-        balance.set(_to, balanceOf(_to, _id).add(_amount));
+        balance.set(_from, balanceOf(_from, _id).subtract(_value));
+        balance.set(_to, balanceOf(_to, _id).add(_value));
 
         // Emit event
-        this.TransferSingle(caller, _from, _to, _id, _amount);
+        this.TransferSingle(caller, _from, _to, _id, _value);
 
         if (_to.isContract()) {
             // Call {@code onHSP1155Received} if the recipient is a contract
-            Context.call(_to, "onHSP1155Received", caller, _from, _id, _amount, _data == null ? new byte[]{} : _data);
+            Context.call(_to, "onHSP1155Received", caller, _from, _id, _value, _data == null ? new byte[]{} : _data);
         }
     }
 
     @External
-    public void safeBatchTransferFrom(Address _from, Address _to, BigInteger[] _ids, BigInteger[] _amounts, @Optional byte[] _data) {
+    public void safeBatchTransferFrom(Address _from, Address _to, BigInteger[] _ids, BigInteger[] _values, @Optional byte[] _data) {
         final Address caller = Context.getCaller();
 
         Context.require(!_to.equals(ZERO_ADDRESS),
                 "_to must be non-zero");
-        Context.require(_ids.length == _amounts.length,
+        Context.require(_ids.length == _values.length,
                 "id/value pairs mismatch");
         Context.require(_from.equals(caller) || this.isApprovedForAll(_from, caller),
                 "Need operator approval for 3rd party transfers");
 
         for (int i = 0; i < _ids.length; i++) {
             BigInteger _id = _ids[i];
-            BigInteger _value = _amounts[i];
+            BigInteger _value = _values[i];
 
             Context.require(_value.compareTo(BigInteger.ZERO) >= 0,
                     "Insufficient funds");
@@ -131,11 +131,11 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
         }
 
         // Emit event
-        this.TransferBatch(caller, _from, _to, rlpEncode(_ids), rlpEncode(_amounts));
+        this.TransferBatch(caller, _from, _to, rlpEncode(_ids), rlpEncode(_values));
 
         if (_to.isContract()) {
             // Call {@code onHSP1155BatchReceived} if the recipient is a contract
-            Context.call(_to, "onHSP1155BatchReceived", caller, _from, _ids, _amounts, _data);
+            Context.call(_to, "onHSP1155BatchReceived", caller, _from, _ids, _values, _data);
         }
     }
 
@@ -152,12 +152,11 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
     }
 
     @EventLog(indexed = 2)
-    public void ApprovalForAll(Address _account, Address _operator, boolean _approved) {
+    public void ApprovalForAll(Address _owner, Address _operator, boolean _approved) {
     }
 
     @EventLog(indexed = 1)
-    public void URI(String _value, BigInteger _id) {
-
+    public void URI(BigInteger _id, String _value) {
     }
 
     // ================================================
@@ -187,7 +186,7 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
     protected void _setTokenURI(BigInteger _id, String _uri) {
         Context.require(_uri.length() > 0, "Uri should be set");
         tokenURIs.set(_id, _uri);
-        this.URI(_uri, _id);
+        this.URI(_id, _uri);
     }
 
     private void _mintInternal(Address owner, BigInteger id, BigInteger amount) {
@@ -245,7 +244,7 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
         TransferBatch(owner, owner, ZERO_ADDRESS, rlpEncode(ids), rlpEncode(amounts));
     }
 
-    @External
+    @External(readonly = true)
     public String uri(BigInteger _id) {
         return tokenURIs.get(_id);
     }

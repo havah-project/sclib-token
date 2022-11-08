@@ -58,21 +58,21 @@ public interface HSP1155 {
      * Must trigger on any successful approval (either enabled or disabled) for a third party/operator address
      * to manage all tokens for the {@code _owner} address.
      *
-     * @param _account  The address of the token holder
+     * @param _owner  The address of the token holder
      * @param _operator The address of authorized operator
      * @param _approved True if the operator is approved, false to revoke approval
      */
-    void ApprovalForAll(Address _account, Address _operator, boolean _approved);
+    void ApprovalForAll(Address _owner, Address _operator, boolean _approved);
 
     /**
      * Must trigger on any successful URI updates for a token ID.
      * URIs are defined in RFC 3986.
      * The URI must point to a JSON file that conforms to the "HSP-1155 Metadata URI JSON Schema".
      *
-     * @param _value The updated URI string
      * @param _id    ID of the token
+     * @param _value The updated URI string
      */
-    void URI(String _value, BigInteger _id);
+    void URI(BigInteger _id, String _value);
 
     // ================================================
     // External methods
@@ -81,20 +81,20 @@ public interface HSP1155 {
     /**
      * Returns the balance of the owner's tokens.
      *
-     * @param _account The address of the token holder
+     * @param _owner The address of the token holder
      * @param _id      ID of the token
      * @return The _account's balance of the token type requested
      */
-    BigInteger balanceOf(Address _account, BigInteger _id);
+    BigInteger balanceOf(Address _owner, BigInteger _id);
 
     /**
      * Returns the balance of multiple owner/id pairs.
      *
-     * @param _accounts The addresses of the token holders
+     * @param _owners The addresses of the token holders
      * @param _ids      IDs of the tokens
      * @return The list of balance (i.e. balance for each owner/id pair)
      */
-    BigInteger[] balanceOfBatch(Address[] _accounts, BigInteger[] _ids);
+    BigInteger[] balanceOfBatch(Address[] _owners, BigInteger[] _ids);
 
     /**
      * Enables or disables approval for a third party ("operator") to manage all of the caller's tokens,
@@ -108,11 +108,11 @@ public interface HSP1155 {
     /**
      * Returns the approval status of an operator for a given owner.
      *
-     * @param _account  The owner of the tokens
+     * @param _owner  The owner of the tokens
      * @param _operator The address of authorized operator
      * @return True if the operator is approved, false otherwise
      */
-    boolean isApprovedForAll(Address _account, Address _operator);
+    boolean isApprovedForAll(Address _owner, Address _operator);
 
     /**
      * Transfers `amount` tokens of token type `id` from `from` to `to`.
@@ -127,7 +127,7 @@ public interface HSP1155 {
      * - If `to` refers to a smart contract, it must implement {HSP1155Receiver-onHSP1155Received} and return the
      * acceptance magic value.
      */
-    void safeTransferFrom(Address _from, Address _to, BigInteger _id, BigInteger _amount, @Optional byte[] _data);
+    void safeTransferFrom(Address _from, Address _to, BigInteger _id, BigInteger _value, @Optional byte[] _data);
 
     /**
      * xref:ROOT:hsp1155.adoc#batch-operations[Batched] version of {safeTransferFrom}.
@@ -140,5 +140,5 @@ public interface HSP1155 {
      * - If `to` refers to a smart contract, it must implement {HSP1155Receiver-onHSP1155BatchReceived} and return the
      * acceptance magic value.
      */
-    void safeBatchTransferFrom(Address _from, Address _to, BigInteger[] _ids, BigInteger[] _amounts, @Optional byte[] _data);
+    void safeBatchTransferFrom(Address _from, Address _to, BigInteger[] _ids, BigInteger[] _values, @Optional byte[] _data);
 }

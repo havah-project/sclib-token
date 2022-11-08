@@ -27,10 +27,10 @@ public abstract class HSP20Burnable extends HSP20Basic {
     }
 
     /**
-     * Destroys `_amount` tokens from the caller.
+     * Destroys `_value` tokens from the caller.
      */
     @External
-    public void burn(BigInteger _amount) {
-        _burn(Context.getCaller(), _amount);
+    public void burn(BigInteger _value) {
+        _burn(Context.getCaller(), _value);
     }
 }

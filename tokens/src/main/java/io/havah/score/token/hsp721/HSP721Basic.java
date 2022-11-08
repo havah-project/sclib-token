@@ -31,12 +31,12 @@
      protected static final Address ZERO_ADDRESS = new Address(new byte[Address.LENGTH]);
      private final VarDB<String> name = Context.newVarDB("name", String.class);
      private final VarDB<String> symbol = Context.newVarDB("symbol", String.class);
-     private final DictDB<Address, IntSet> holderTokens = Context.newDictDB("holders", IntSet.class);
-     private final EnumerableMap<BigInteger, Address> tokenOwners = new EnumerableMap<>("owners", BigInteger.class, Address.class);
-     private final DictDB<BigInteger, Address> tokenApprovals = Context.newDictDB("token_approvals", Address.class);
-     private final BranchDB<Address, DictDB<Address, Boolean>> operatorApprovals = Context.newBranchDB("operator_approvals", Boolean.class);
+     protected final DictDB<Address, IntSet> holderTokens = Context.newDictDB("holders", IntSet.class);
+     protected final EnumerableMap<BigInteger, Address> tokenOwners = new EnumerableMap<>("owners", BigInteger.class, Address.class);
+     protected final DictDB<BigInteger, Address> tokenApprovals = Context.newDictDB("token_approvals", Address.class);
+     protected final BranchDB<Address, DictDB<Address, Boolean>> operatorApprovals = Context.newBranchDB("operator_approvals", Boolean.class);
      // id => token URI
-     private final DictDB<BigInteger, String> tokenURIs = Context.newDictDB("token_uri", String.class);
+     protected final DictDB<BigInteger, String> tokenURIs = Context.newDictDB("token_uri", String.class);
 
      public HSP721Basic(String _name, String _symbol) {
          // initialize values only at first deployment
@@ -114,11 +114,11 @@
      }
 
      @External
-     public void approve(Address _to, BigInteger _tokenId) {
+     public void approve(Address _approved, BigInteger _tokenId) {
          Address owner = ownerOf(_tokenId);
-         Context.require(!owner.equals(_to), "Cannot approve owner");
+         Context.require(!owner.equals(_approved), "Cannot approve owner");
          Context.require(owner.equals(Context.getCaller()), "Only owner can call this method");
-         _approve(_to, _tokenId);
+         _approve(_approved, _tokenId);
      }
 
      @External
@@ -129,16 +129,9 @@
          ApprovalForAll(owner, _operator, _approved);
      }
 
-     private void _approve(Address to, BigInteger tokenId) {
-         tokenApprovals.set(tokenId, to);
-         Approval(ownerOf(tokenId), to, tokenId);
-     }
-
-     @External
-     public void transfer(Address _to, BigInteger _tokenId) {
-         Address owner = ownerOf(_tokenId);
-         Context.require(owner.equals(Context.getCaller()), "Only owner can call this method");
-         _transfer(owner, _to, _tokenId);
+     private void _approve(Address approved, BigInteger tokenId) {
+         tokenApprovals.set(tokenId, approved);
+         Approval(ownerOf(tokenId), approved, tokenId);
      }
 
      @External

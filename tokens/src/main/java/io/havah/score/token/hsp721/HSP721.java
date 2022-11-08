@@ -84,7 +84,7 @@ public interface HSP721 {
      * The zero address indicates there is no approved address.
      * Throws unless the caller is the current NFT owner.
      */
-    void approve(Address _to, BigInteger _tokenId);
+    void approve(Address _approved, BigInteger _tokenId);
 
     /**
      * Approve or remove `operator` as an operator for the caller.

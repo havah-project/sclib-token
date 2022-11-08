@@ -48,10 +48,10 @@ public interface HSP20 {
     /**
      * Returns the account balance of another account with address {@code _owner}.
      */
-    BigInteger balanceOf(Address _account);
+    BigInteger balanceOf(Address _owner);
 
     /**
-     * Transfers {@code _amount} amount of tokens to address {@code _to}, and MUST fire the {@code Transfer} event.
+     * Transfers {@code _value} amount of tokens to address {@code _to}, and MUST fire the {@code Transfer} event.
      * This function SHOULD throw if the caller account balance does not have enough tokens to spend.
      * If {@code _to} is a contract, this function MUST invoke the function {@code tokenFallback(Address, int, bytes)}
      * in {@code _to}. If the {@code tokenFallback} function is not implemented in {@code _to} (receiver contract),
@@ -59,7 +59,7 @@ public interface HSP20 {
      * If {@code _to} is an externally owned address, then the transaction must be sent without trying to execute
      * {@code tokenFallback} in {@code _to}.
      */
-    boolean transfer(Address _to, BigInteger _amount);
+    boolean transfer(Address _to, BigInteger _value);
 
     /**
      * Returns the amount which {@code _spender} is still allowed to withdraw from {@code _owner}.
@@ -70,7 +70,7 @@ public interface HSP20 {
      * Allows {@code _spender} to withdraw from your account  multiple times, up to the {@code _value} amount.
      * If this function is called again it overwrites the current allowance with _value.
      */
-    boolean approve(Address _spender, BigInteger _amount);
+    boolean approve(Address _spender, BigInteger _value);
 
     /**
      * Transfers the ownership of an NFT from one address to another address, and MUST fire the {@code Transfer} event.
@@ -78,5 +78,5 @@ public interface HSP20 {
      * Throws if {@code _from} is not the current owner.
      * Throws if {@code _to} is the zero address.
      */
-    boolean transferFrom(Address _from, Address _to, BigInteger _amount);
+    boolean transferFrom(Address _from, Address _to, BigInteger _value);
 }
