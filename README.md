@@ -1,3 +1,4 @@
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.havah/havah-tokens/badge.svg)](https://search.maven.org/search?q=g:io.havah%20a:havah-tokens)
 # A Java Smart Contract Library for HAVAH Standard Tokens
 
 This repository contains a Java Smart Contract library for HAVAH standard tokens like

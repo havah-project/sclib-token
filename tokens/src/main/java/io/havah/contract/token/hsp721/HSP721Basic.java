@@ -75,7 +75,7 @@
 
      private boolean isApprovedOrOwner(Address spender, BigInteger tokenId) {
          Address owner = ownerOf(tokenId);
-         return (spender.equals(owner) || isApprovedForAll(owner, spender) || getApproved(tokenId) == spender);
+         return (spender.equals(owner) || isApprovedForAll(owner, spender) || getApproved(tokenId).equals(spender));
      }
 
      protected void _setTokenURI(BigInteger _id, String _uri) {
@@ -136,9 +136,7 @@
 
      @External
      public void transferFrom(Address _from, Address _to, BigInteger _tokenId) {
-         Address owner = ownerOf(_tokenId);
-         Address spender = Context.getCaller();
-         Context.require(owner.equals(spender) || getApproved(_tokenId).equals(spender), "Spender is not authorized to transfer tokens");
+         Context.require(isApprovedOrOwner(Context.getCaller(), _tokenId), "caller is not token owner or approved");
          _transfer(_from, _to, _tokenId);
      }
 

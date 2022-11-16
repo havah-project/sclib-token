@@ -15,9 +15,31 @@
   */
  package io.havah.contract.token.hsp721;
 
+ import score.Address;
+ import score.Context;
+ import score.annotation.External;
+
+ import java.math.BigInteger;
+
  public class HSP721MintBurn extends HSP721Basic {
 
      public HSP721MintBurn(String _name, String _symbol) {
          super(_name, _symbol);
+     }
+
+     @External
+     public void mint(BigInteger _tokenId, String _uri) {
+        Context.require(Context.getCaller().equals(Context.getOwner()));
+         super._mint(Context.getCaller(), _tokenId);
+         _setTokenURI(_tokenId, _uri);
+     }
+
+     @External
+     public void burn(BigInteger _tokenId) {
+         // simple access control - only the owner of token can burn it
+         Address owner = ownerOf(_tokenId);
+         var caller = Context.getCaller();
+         Context.require(owner.equals(caller), "Spender is not authorized to transfer tokens");
+         super._burn(_tokenId);
      }
  }

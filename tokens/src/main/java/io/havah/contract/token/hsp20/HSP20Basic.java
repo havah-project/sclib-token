@@ -133,7 +133,7 @@ public abstract class HSP20Basic implements HSP20, HSP20Metadata {
         Approval(owner, spender, value);
     }
 
-    @External(readonly = true)
+    @External
     public boolean approve(Address _spender, BigInteger _value) {
         Address owner = Context.getCaller();
         _approve(owner, _spender, _value);
