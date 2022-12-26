@@ -234,7 +234,7 @@
      public void Approval(Address _owner, Address _approved, BigInteger _tokenId) {
      }
 
-     @EventLog(indexed = 3)
+     @EventLog(indexed = 2)
      public void ApprovalForAll(Address _owner, Address _operator, boolean _approved) {
      }
  }

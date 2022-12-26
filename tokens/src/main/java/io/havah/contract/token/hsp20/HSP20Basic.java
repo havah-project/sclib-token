@@ -145,7 +145,7 @@ public abstract class HSP20Basic implements HSP20, HSP20Metadata {
         return allowances.at(_owner).getOrDefault(_spender, BigInteger.ZERO);
     }
 
-    void _spendAllowance(Address owner, Address spender, BigInteger value) {
+    protected void _spendAllowance(Address owner, Address spender, BigInteger value) {
         BigInteger currentAllowance = allowance(owner, spender);
         BigInteger reminder = currentAllowance.subtract(value);
         Context.require(reminder.signum() >= 0, "insufficient allowance");
@@ -160,9 +160,9 @@ public abstract class HSP20Basic implements HSP20, HSP20Metadata {
         return true;
     }
 
-    @EventLog(indexed=3)
+    @EventLog(indexed=2)
     public void Transfer(Address _from, Address _to, BigInteger _value) {}
 
-    @EventLog(indexed=3)
+    @EventLog(indexed=2)
     public void Approval(Address _owner, Address _spender, BigInteger _value) {}
 }
