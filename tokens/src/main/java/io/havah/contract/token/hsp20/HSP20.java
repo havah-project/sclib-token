@@ -52,11 +52,6 @@ public interface HSP20 {
     /**
      * Transfers {@code _value} amount of tokens to address {@code _to}, and MUST fire the {@code Transfer} event.
      * This function SHOULD throw if the caller account balance does not have enough tokens to spend.
-     * If {@code _to} is a contract, this function MUST invoke the function {@code tokenFallback(Address, int, bytes)}
-     * in {@code _to}. If the {@code tokenFallback} function is not implemented in {@code _to} (receiver contract),
-     * then the transaction must fail and the transfer of tokens should not occur.
-     * If {@code _to} is an externally owned address, then the transaction must be sent without trying to execute
-     * {@code tokenFallback} in {@code _to}.
      */
     boolean transfer(Address _to, BigInteger _value);
 
