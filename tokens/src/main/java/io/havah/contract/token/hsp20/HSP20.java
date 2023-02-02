@@ -67,10 +67,12 @@ public interface HSP20 {
     boolean approve(Address _spender, BigInteger _value);
 
     /**
-     * Transfers the ownership of an NFT from one address to another address, and MUST fire the {@code Transfer} event.
-     * Throws unless the caller is the current owner or the approved address for the NFT.
-     * Throws if {@code _from} is not the current owner.
-     * Throws if {@code _to} is the zero address.
+     * Transfers {@code _value} amount of tokens from address {@code _from} to address {@code _to}, and MUST fire the Transfer event.
+     * The transferFrom method is used for a withdraw workflow, allowing contracts to transfer tokens on your behalf.
+     * This can be used for example to allow a contract to transfer tokens on your behalf and/or to charge fees in sub-currencies.
+     * The function SHOULD throw unless the {@code _from} account has deliberately authorized the sender of the message via some mechanism.
+     *
+     * NOTE: Transfers of 0 values MUST be treated as normal transfers and fire the Transfer event.
      */
     boolean transferFrom(Address _from, Address _to, BigInteger _value);
 }
