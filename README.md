@@ -14,7 +14,7 @@ Soon you will be able to include this package from Maven Central
 by adding the following dependency in your `build.gradle`.
 
 ```groovy
-implementation 'com.github.havah:token:0.0.1'
+implementation 'com.github.havah:token:0.0.x'
 ```
 
 You need to create a entry Java class to inherit the attributes and methods from the basic token classes.
@@ -25,7 +25,7 @@ public class HSP20FixedSupply extends HSP20Basic {
     public HSP20FixedSupply(String _name, String _symbol) {
         super(_name, _symbol, 3);
         _mint(Context.getCaller(), BigInteger.valueOf(1000000));
-    HSP20
+    }
 }
 ```
 
