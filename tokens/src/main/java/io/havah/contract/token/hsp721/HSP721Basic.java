@@ -94,7 +94,7 @@
 
      private void safeTransfer(Address from, Address to, BigInteger tokenId, byte[] data) {
          _transfer(from, to, tokenId);
-         Context.require(checkOnHSP721Received(from, to, tokenId, data));
+         Context.require(checkOnHSP721Received(from, to, tokenId, data == null ? new byte[]{} : data));
      }
 
      @External

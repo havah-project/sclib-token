@@ -135,7 +135,7 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
 
         if (_to.isContract()) {
             // Call {@code onHSP1155BatchReceived} if the recipient is a contract
-            Context.call(_to, "onHSP1155BatchReceived", caller, _from, _ids, _values, _data);
+            Context.call(_to, "onHSP1155BatchReceived", caller, _from, _ids, _values, _data == null ? new byte[]{} : _data);
         }
     }
 
