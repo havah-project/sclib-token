@@ -14,7 +14,7 @@ Soon you will be able to include this package from Maven Central
 by adding the following dependency in your `build.gradle`.
 
 ```groovy
-implementation 'com.github.havah:token:0.0.x'
+implementation 'io.havah:havah-tokens:1.0.1'
 ```
 
 You need to create a entry Java class to inherit the attributes and methods from the basic token classes.
