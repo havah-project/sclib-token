@@ -65,8 +65,8 @@ public interface HSP1155 {
     void ApprovalForAll(Address _owner, Address _operator, boolean _approved);
 
     /**
-     * Must trigger on any successful URI updates for a token ID.
-     * URIs are defined in RFC 3986.
+     * Must trigger on any successful URI updates or a JSON file
+     * pointed by URI is updated for a token ID.
      * The URI must point to a JSON file that conforms to the "HSP-1155 Metadata URI JSON Schema".
      *
      * @param _id    ID of the token

@@ -115,19 +115,13 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
             BigInteger _id = _ids[i];
             BigInteger _value = _values[i];
 
-            Context.require(_value.compareTo(BigInteger.ZERO) >= 0,
-                    "Insufficient funds");
-
-            BigInteger balanceFrom = balanceOf(_from, _id);
-
-            Context.require(_value.compareTo(balanceFrom) <= 0,
+            Context.require(BigInteger.ZERO.compareTo(_value) <= 0 && _value.compareTo(balanceOf(_from, _id)) <= 0,
                     "Insufficient funds");
 
             // Transfer funds
-            BigInteger balanceTo = balanceOf(_to, _id);
             DictDB<Address, BigInteger> balance = balances.at(_id);
-            balance.set(_from, balanceFrom.subtract(_value));
-            balance.set(_to, balanceTo.add(_value));
+            balance.set(_from, balanceOf(_from, _id).subtract(_value));
+            balance.set(_to, balanceOf(_to, _id).add(_value));
         }
 
         // Emit event
