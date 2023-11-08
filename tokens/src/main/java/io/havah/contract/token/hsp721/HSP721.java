@@ -65,8 +65,7 @@ public interface HSP721 {
      * not the current owner. Throws if `_to` is the zero address. Throws if
      * `_tokenId` is not a valid NFT. When transfer is complete, this function
      * checks if `_to` is a smart contract. If so, it calls
-     * `onHSP721Received` on `_to` and throws if the return value is not
-     * `bytes4(keccak256("onHSP721Received(address,address,uint256,bytes)"))`.
+     * `onHSP721Received` on `_to` and throws if the return value is not True.
      */
     void safeTransferFrom(Address _from, Address _to, BigInteger _tokenId, @Optional byte[] data);
 

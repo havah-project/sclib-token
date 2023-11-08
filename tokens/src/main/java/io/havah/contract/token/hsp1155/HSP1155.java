@@ -124,8 +124,7 @@ public interface HSP1155 {
      * - `to` cannot be the zero address.
      * - If the caller is not `from`, it must have been approved to spend ``from``'s tokens via {setApprovalForAll}.
      * - `from` must have a balance of tokens of type `id` of at least `amount`.
-     * - If `to` refers to a smart contract, it must implement {HSP1155Receiver-onHSP1155Received} and return the
-     * acceptance magic value.
+     * - If `to` refers to a smart contract, it must implement {HSP1155Receiver-onHSP1155Received} and return True.
      */
     void safeTransferFrom(Address _from, Address _to, BigInteger _id, BigInteger _value, @Optional byte[] _data);
 
@@ -137,8 +136,7 @@ public interface HSP1155 {
      * Requirements:
      * <p>
      * - `ids` and `amounts` must have the same length.
-     * - If `to` refers to a smart contract, it must implement {HSP1155Receiver-onHSP1155BatchReceived} and return the
-     * acceptance magic value.
+     * - If `to` refers to a smart contract, it must implement {HSP1155Receiver-onHSP1155BatchReceived} and return True.
      */
     void safeBatchTransferFrom(Address _from, Address _to, BigInteger[] _ids, BigInteger[] _values, @Optional byte[] _data);
 }

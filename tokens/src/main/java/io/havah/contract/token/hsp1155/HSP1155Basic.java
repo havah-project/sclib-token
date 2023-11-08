@@ -194,7 +194,7 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
         _mintInternal(owner, id, amount);
 
         // emit transfer event for Mint semantic
-        TransferSingle(owner, ZERO_ADDRESS, owner, id, amount);
+        TransferSingle(Context.getCaller(), ZERO_ADDRESS, owner, id, amount);
     }
 
     protected void _mintBatch(Address owner, BigInteger[] ids, BigInteger[] amounts) {
@@ -207,7 +207,7 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
         }
 
         // emit transfer event for Mint semantic
-        TransferBatch(owner, ZERO_ADDRESS, owner, rlpEncode(ids), rlpEncode(amounts));
+        TransferBatch(Context.getCaller(), ZERO_ADDRESS, owner, rlpEncode(ids), rlpEncode(amounts));
     }
 
     private void _burnInternal(Address owner, BigInteger id, BigInteger amount) {
@@ -222,7 +222,7 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
         _burnInternal(owner, id, amount);
 
         // emit transfer event for Burn semantic
-        TransferSingle(owner, owner, ZERO_ADDRESS, id, amount);
+        TransferSingle(Context.getCaller(), owner, ZERO_ADDRESS, id, amount);
     }
 
     protected void _burnBatch(Address owner, BigInteger[] ids, BigInteger[] amounts) {
@@ -235,7 +235,7 @@ public abstract class HSP1155Basic implements HSP1155, HSP1155MetadataURI {
         }
 
         // emit transfer event for Burn semantic
-        TransferBatch(owner, owner, ZERO_ADDRESS, rlpEncode(ids), rlpEncode(amounts));
+        TransferBatch(Context.getCaller(), owner, ZERO_ADDRESS, rlpEncode(ids), rlpEncode(amounts));
     }
 
     @External(readonly = true)
