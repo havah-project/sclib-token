@@ -6,8 +6,8 @@ import java.math.BigInteger;
 
 public interface HSP1363Spender {
     /**
-     * @notice Handle the approval of HSP1363 tokens
-     * @dev Any HSP1363 smart contract calls this function on the recipient
+     * Handle the approval of HSP1363 tokens
+     * Any HSP1363 smart contract calls this function on the recipient
      * after an `approve`. This function MAY throw to revert and reject the
      * approval. Return of other than true MUST result in the
      * transaction being reverted.
